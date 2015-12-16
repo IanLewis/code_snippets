@@ -1,0 +1,17 @@
+FROM debian:jessie
+
+RUN apt-get update
+RUN apt-get install -y gcc libc6-dev make
+RUN curl -sSL "http://download.redis.io/releases/redis-3.0.5.tar.gz" -o
+redis.tar.gz
+RUN mkdir -p /usr/src/redis
+RUN tar -xzf redis.tar.gz -C /usr/src/redis
+RUN make -C /usr/src/redis
+RUN make -C /usr/src/redis install
+
+# 全部削除
+RUN rm -f redis.tar.gz
+RUN rm -f /usr/src/redis
+RUN apt-get purge -y --auto-remove gcc libc6-dev make
+
+# ...
