@@ -1,0 +1,27 @@
+kubectl proxy --port=8888
+
+curl -s http://localhost:8888/api/v1/namespaces/default/pods | jq '.'
+
+
+curl -s http://localhost:8888/api/v1/namespaces/default/pods | jq '[.items[] | {name: .metadata.name, status: .status.phase}]'
+
+
+curl -s http://localhost:8888/api/v1/namespaces/default/replicationcontrollers | jq '[.items[] | { name: .metadata.name, replicas: .spec.replicas }]'
+
+
+---
+
+
+kubectl get pods --server=http://localhost:8080
+
+kubectl get pods --namespace=foo --server=http://localhost:8080
+
+kubectl label rc frontend-2 foo=bar --server=http://localhost:8080
+
+kubectl rolling-update frontend-2 -f frontend-controller-v3.yaml --server=http://localhost:8080 --update-period=5s
+
+
+---
+
+kubectl create -f https://raw.githubusercontent.com/kubernetes/kubedash/master/deploy/kube-config.yaml
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard-canary.yaml
